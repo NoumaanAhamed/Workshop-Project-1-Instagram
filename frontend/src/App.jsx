@@ -10,9 +10,16 @@ const App = () => {
 
   useEffect(() => {
     // Fetch all posts when the component mounts
-    axios.get('http://localhost:3000/posts')
-      .then(response => setPosts(response.data))
-      .catch(error => console.error('Error fetching posts:', error));
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/posts');
+        setPosts(response.data);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      }
+    };
+
+    fetchPosts();
   }, []); // Empty dependency array ensures this effect runs once on mount
 
   const handleInputChange = (event) => {
@@ -20,41 +27,45 @@ const App = () => {
     setNewPost({ ...newPost, [name]: value });
   };
 
-  const handleCreatePost = () => {
-    // Create a new post
-    axios.post('http://localhost:3000/posts', newPost)
-      .then(response => {
-        setPosts([...posts, response.data]);
-        setNewPost({ image: '', caption: '' });
-      })
-      .catch(error => console.error('Error creating post:', error));
+  const handleCreatePost = async () => {
+    try {
+      // Create a new post
+      const response = await axios.post('http://localhost:3000/posts', newPost);
+      setPosts([...posts, response.data]);
+      setNewPost({ image: '', caption: '' });
+    } catch (error) {
+      console.error('Error creating post:', error);
+    }
   };
 
-  const handleLike = (postId) => {
-    // Like a post
-    axios.put(`http://localhost:3000/posts/${postId}/like`)
-      .then(response => {
-        setPosts(posts.map(post => (post._id === postId ? response.data : post)));
-      })
-      .catch(error => console.error('Error liking post:', error));
+  const handleLike = async (postId) => {
+    try {
+      // Like a post
+      const response = await axios.put(`http://localhost:3000/posts/${postId}/like`);
+      setPosts(posts.map(post => (post._id === postId ? response.data : post)));
+    } catch (error) {
+      console.error('Error liking post:', error);
+    }
   };
 
-  const handleUnlike = (postId) => {
-    // Unlike a post
-    axios.put(`http://localhost:3000/posts/${postId}/unlike`)
-      .then(response => {
-        setPosts(posts.map(post => (post._id === postId ? response.data : post)));
-      })
-      .catch(error => console.error('Error unliking post:', error));
+  const handleUnlike = async (postId) => {
+    try {
+      // Unlike a post
+      const response = await axios.put(`http://localhost:3000/posts/${postId}/unlike`);
+      setPosts(posts.map(post => (post._id === postId ? response.data : post)));
+    } catch (error) {
+      console.error('Error unliking post:', error);
+    }
   };
 
-  const handleDelete = (postId) => {
-    // Delete a post
-    axios.delete(`http://localhost:3000/posts/${postId}`)
-      .then(() => {
-        setPosts(posts.filter(post => post._id !== postId));
-      })
-      .catch(error => console.error('Error deleting post:', error));
+  const handleDelete = async (postId) => {
+    try {
+      // Delete a post
+      await axios.delete(`http://localhost:3000/posts/${postId}`);
+      setPosts(posts.filter(post => post._id !== postId));
+    } catch (error) {
+      console.error('Error deleting post:', error);
+    }
   };
 
   const handleCommentInputChange = (event) => {
@@ -62,14 +73,15 @@ const App = () => {
     setNewComment({ ...newComment, [name]: value });
   };
 
-  const handleComment = (postId) => {
-    // Comment on a post
-    axios.put(`http://localhost:3000/posts/${postId}/comment`, { comment: newComment.comment })
-      .then(response => {
-        setPosts(posts.map(post => (post._id === postId ? response.data : post)));
-        setNewComment({ postId: '', comment: '' });
-      })
-      .catch(error => console.error('Error commenting on post:', error));
+  const handleComment = async (postId) => {
+    try {
+      // Comment on a post
+      const response = await axios.put(`http://localhost:3000/posts/${postId}/comment`, { comment: newComment.comment });
+      setPosts(posts.map(post => (post._id === postId ? response.data : post)));
+      setNewComment({ postId: '', comment: '' });
+    } catch (error) {
+      console.error('Error commenting on post:', error);
+    }
   };
 
   return (
