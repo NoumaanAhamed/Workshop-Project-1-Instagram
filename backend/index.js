@@ -1,6 +1,7 @@
 //design an express backend for instagram posts
 
 //initialise express and mongoose
+require('dotenv').config();
 
 const express = require('express');
 
@@ -179,7 +180,7 @@ app.get('/posts/:id/likes', async (req, res) => {
 
 app.listen(3000, () => {
     console.log('Server started on port 3000');
-    mongoose.connect("mongodb+srv://211001060:wasdijkl@cluster0.tthrq6f.mongodb.net/").then(() => {
+    mongoose.connect(process.env.MONGODB_URI).then(() => {
         console.log("Connected to the database!");
     })
 });
