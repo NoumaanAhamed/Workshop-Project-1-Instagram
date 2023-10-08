@@ -1,6 +1,4 @@
-//design an express backend for instagram posts
 
-//initialise express and mongoose
 require('dotenv').config();
 
 const express = require('express');
