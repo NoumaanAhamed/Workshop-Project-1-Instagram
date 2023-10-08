@@ -13,7 +13,6 @@ app.use(express.json());
 
 app.use(cors())
 
-//create a schema for posts
 
 const postSchema = new mongoose.Schema({
     image:String,
@@ -28,7 +27,6 @@ const postSchema = new mongoose.Schema({
     }
 });
 
-//create a model for posts
 
 const Post = mongoose.model('Post', postSchema);
 
